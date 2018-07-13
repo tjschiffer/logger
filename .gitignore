@@ -1,0 +1,8 @@
+
+\.idea/
+
+config/config\.py
+
+config/__pycache__/
+
+venv/*
