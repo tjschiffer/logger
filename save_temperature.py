@@ -2,6 +2,11 @@ import requests
 import datetime
 import config.config as config
 
+
+def isWithinCompression(current_value, new_value, compression_value):
+    return True
+
+
 s = requests.session()
 
 login = s.post(config.DATABASE_CONFIG['host'] + '/api/login', {
@@ -10,9 +15,13 @@ login = s.post(config.DATABASE_CONFIG['host'] + '/api/login', {
 })
 print(login.json())
 
-dash = s.post(config.DATABASE_CONFIG['host'] + '/api/insert', {
-    'sensor_id': 1,
-    'timestamp': datetime.datetime.utcnow(),
-    'value': 22.5
-})
+rows = [
+    {
+        'sensor_id': 1,
+        'timestamp': datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+        'value': 22.5
+    }
+]
+
+dash = s.post(config.DATABASE_CONFIG['host'] + '/api/insert', json=rows)
 print(dash.text)
