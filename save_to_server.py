@@ -3,6 +3,7 @@ import datetime
 import config.config as config
 from urllib3.connection import NewConnectionError, ConnectTimeoutError
 from urllib3.exceptions import MaxRetryError
+import buffer
 
 
 def save_to_server(data):
@@ -24,6 +25,13 @@ def save_to_server(data):
 
 save_to_server({
     'sensor_id': 1,
-    'timestamp': datetime.datetime.utcnow(),
+    'timestamp': datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
     'value': 22.5
 })
+
+print(buffer.read_buffer())
+# buffer.write_buffer([{
+#     'sensor_id': 1,
+#     'timestamp': datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+#     'value': 22.5
+# }])
