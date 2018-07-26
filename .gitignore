@@ -107,4 +107,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
->>>>>>> 6a123e1d832ef325f845fbbf65a5f81b97a2ba3f
+
+recent_values\.json
+buffer\.json
