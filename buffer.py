@@ -8,7 +8,6 @@ def read_buffer():
         f = open(BUFFER_FILENAME, 'r', encoding='utf-8')
         json_text = f.read()
         if json_text:
-            print(json_text)
             return json.loads(json_text)
     except FileNotFoundError:
         return []
@@ -17,4 +16,4 @@ def read_buffer():
 
 def write_buffer(data):
     f = open(BUFFER_FILENAME, 'w', encoding='utf-8')
-    f.write(json.dumps(data))
+    f.write(json.dumps(data, separators=(',', ':')))
