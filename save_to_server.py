@@ -1,8 +1,5 @@
 import requests
 import config.config as config
-from urllib3.connection import NewConnectionError, ConnectTimeoutError
-from urllib3.exceptions import MaxRetryError, ReadTimeoutError
-from requests.exceptions import ReadTimeout
 import json
 
 
@@ -44,5 +41,6 @@ def save_to_server(data):
         if not response_data['success'] or not response_data['insertedRows']:
             return False
         return response_data['insertedRows']
-    except (NewConnectionError, MaxRetryError, ConnectTimeoutError, ReadTimeoutError, ReadTimeout) as e:
+    except Exception:
+        # If any error occurs (ConnectionError etc), return false
         return False
