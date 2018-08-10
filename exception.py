@@ -5,11 +5,43 @@ RECENT_VALUES_FILENAME = 'recent_values.json'
 
 
 def save_recent_values(data):
+    """
+    Save the recent values to disk.
+
+    :param data: {
+      sensor_id: (float),
+      ...
+    }
+    :return:
+    """
     f = open(RECENT_VALUES_FILENAME, 'w', encoding='utf-8')
     f.write(json.dumps(data))
 
 
 def except_values(values):
+    """
+    Remove values that are not different enough from
+    the last measurement stored in recent_values for each sensor_id
+    (based on the config.DATA_COMPRESSION for each sensor_id)
+    from the given array of values.
+
+    :param values: [
+      {
+        'sensor_id': (integer),
+        'timestamp': (string - format '%Y-%m-%d %H:%M:%S'),
+        'value': (float)
+      },
+      ...
+    ]
+    :return: [
+      {
+        'sensor_id': (integer),
+        'timestamp': (string - format '%Y-%m-%d %H:%M:%S'),
+        'value': (float)
+      },
+      ...
+    ]
+    """
     recent_values = {}
     accepted_values = []
     try:

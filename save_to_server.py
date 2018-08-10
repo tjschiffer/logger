@@ -7,6 +7,28 @@ import json
 
 
 def save_to_server(data):
+    """
+    Save supplied values to server.
+    Return false if the save fails, or the saved values with the db id if successful.
+
+    :param data: [
+      {
+        'sensor_id': (integer),
+        'timestamp': (string - format '%Y-%m-%d %H:%M:%S'),
+        'value': (float)
+      },
+      ...
+    ]
+    :return: bool | [
+      {
+        'id': (integer)
+        'sensor_id': (integer),
+        'timestamp': (string - format '%Y-%m-%d %H:%M:%S'),
+        'value': (float)
+      },
+      ...
+    ]
+    """
     try:
         s = requests.session()
         # Login and save to session
