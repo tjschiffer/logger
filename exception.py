@@ -9,9 +9,9 @@ def save_recent_values(data):
     f.write(json.dumps(data))
 
 
-def compress_values(values):
+def except_values(values):
     recent_values = {}
-    compressed_values = []
+    accepted_values = []
     try:
         f = open(RECENT_VALUES_FILENAME, 'r', encoding='utf-8')
         json_text = f.read()
@@ -25,10 +25,10 @@ def compress_values(values):
                 if sensor_id_str not in recent_values or \
                         abs(recent_values[sensor_id_str] - data_value) > config.DATA_COMPRESSION[sensor_id]:
                     # The value is not within compression or not available
-                    compressed_values.append(value)
+                    accepted_values.append(value)
                     recent_values[sensor_id_str] = data_value
         save_recent_values(recent_values)
-        return compressed_values
+        return accepted_values
     except FileNotFoundError:
         # If there is not compression file, save the current values and return them
         for value in values:
