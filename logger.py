@@ -6,7 +6,7 @@ import save_to_server
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
-def log(values):
+def log(values, server_config, exception_config=None):
     """
     Log values to a server, using exception (excluding values
     that have not changed) and buffering (in case the server in unreachable).
@@ -19,10 +19,19 @@ def log(values):
       },
       ...
     ]
+    :param server_config: {
+        'host': (string),
+        'user': (string),
+        'password': (string),
+      }
+    :param exception_config: {
+        sensor_id (int): compression_value (float)
+        ...
+      }
     :return: bool
     """
     # Compress the values to ensure they have changed since last reading
-    compressed_values = exception.except_values(values)
+    compressed_values = exception.except_values(values, exception_config)
     # Get the values from the buffer
     buffered_values = buffer.read_buffer()
 
@@ -33,7 +42,7 @@ def log(values):
     if not compressed_and_buffered_values:
         return True
 
-    inserted_rows = save_to_server.save_to_server(compressed_and_buffered_values)
+    inserted_rows = save_to_server.save_to_server(compressed_and_buffered_values, server_config)
     if not inserted_rows:
         # If saving to the server completely fails (ex. no internet) save all the values to the buffer
         buffer.write_buffer(compressed_and_buffered_values)

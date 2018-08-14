@@ -1,9 +1,8 @@
 import requests
-import config.config as config
 import json
 
 
-def save_to_server(data):
+def save_to_server(data, server_config):
     """
     Save supplied values to server.
     Return false if the save fails, or the saved values with the db id if successful.
@@ -16,6 +15,11 @@ def save_to_server(data):
       },
       ...
     ]
+    :param server_config: {
+        'host': (string),
+        'user': (string),
+        'password': (string),
+    }
     :return: bool | [
       {
         'id': (integer)
@@ -29,12 +33,12 @@ def save_to_server(data):
     try:
         s = requests.session()
         # Login and save to session
-        s.post(config.DATABASE_CONFIG['host'] + '/api/login', {
-            'username': config.DATABASE_CONFIG['user'],
-            'password': config.DATABASE_CONFIG['password']
+        s.post(server_config['host'] + '/api/login', {
+            'username': server_config['user'],
+            'password': server_config['password']
         }, timeout=1)
         # Send the values
-        save_values = s.put(config.DATABASE_CONFIG['host'] + '/api/insert', json=data)
+        save_values = s.put(server_config['host'] + '/api/insert', json=data)
         if save_values.status_code != requests.codes.ok or not save_values.text:
             return False
         response_data = json.loads(save_values.text)
